@@ -3,7 +3,7 @@ from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
 
 class VideoProcessor(VideoProcessorBase):
     def recv(self, frame):
-        return frame
+        return frame.to_image(format="jpeg")
 
 def main():
     st.title("Live Camera Stream")
@@ -23,7 +23,7 @@ def main():
     )
 
     if webrtc_ctx.video_processor:
-        st.video(webrtc_ctx.video)
+        st.image(webrtc_ctx.video)
 
 if __name__ == "__main__":
     main()
