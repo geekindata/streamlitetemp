@@ -1,8 +1,8 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, ClientSettings
+from streamlit_webrtc import webrtc_streamer, VideoProcessorBase, ClientSettings
 
-class VideoTransformer(VideoTransformerBase):
-    def transform(self, frame):
+class VideoProcessor(VideoProcessorBase):
+    def recv(self, frame):
         return frame
 
 def main():
@@ -18,12 +18,13 @@ def main():
     
     webrtc_ctx = webrtc_streamer(
         key="example",
-        video_transformer_factory=VideoTransformer,
-        client_settings=client_settings,
+        video_processor_factory=VideoProcessor,
+        rtc_configuration=client_settings.rtc_configuration,
+        media_stream_constraints=client_settings.media_stream_constraints,
     )
 
-    if webrtc_ctx.video_transformer:
-        st.video(webrtc_ctx.state.object)
+    if webrtc_ctx.video_processor:
+        st.video(webrtc_ctx.video)
 
 if __name__ == "__main__":
     main()
