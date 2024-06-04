@@ -1,9 +1,5 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
-
-class VideoProcessor(VideoProcessorBase):
-    def recv(self, frame):
-        return frame.to_image(format="jpeg")
+from streamlit_webrtc import webrtc_streamer
 
 def main():
     st.title("Live Camera Stream")
@@ -17,13 +13,13 @@ def main():
     
     webrtc_ctx = webrtc_streamer(
         key="example",
-        video_processor_factory=VideoProcessor,
         rtc_configuration=rtc_configuration,
         media_stream_constraints=media_stream_constraints,
     )
 
-    if webrtc_ctx.video_processor:
-        st.image(webrtc_ctx.video)
+    if webrtc_ctx.video_stream:
+        st.write("Live Camera Stream")
+        st.write(webrtc_ctx.video_stream)
 
 if __name__ == "__main__":
     main()
